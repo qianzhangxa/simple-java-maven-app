@@ -1,5 +1,8 @@
 pipeline {
     agent { label 'docker' }
+    options {
+        skipStagesAfterUnstable()
+    }
     tools {
         maven 'Maven_3.9.11'
     }
@@ -17,6 +20,11 @@ pipeline {
                 always {
                     junit 'target/surefire-reports/*.xml'
                 }
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
